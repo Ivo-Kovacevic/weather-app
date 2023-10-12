@@ -19,7 +19,7 @@ searchBar.addEventListener('keydown', (event) => {
 });
 
 async function getData(cityName) {
-    const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=cd0065695f244f8783a190858232909&q=' + cityName + '&days=3', {mode: 'cors'});
+    const response = await fetch('https://api.weatherapi.com/v1/forecast.json?key=cd0065695f244f8783a190858232909&q=' + cityName + '&days=3', {mode: 'cors'});
     const weatherData = await response.json();
     // console.log(weatherData);
     return processData(weatherData);
@@ -95,7 +95,7 @@ function populateHeader(processedWeatherData) {
     const country = document.querySelector(".country");
     const imageWind = document.createElement("img");
     const imageHumidity = document.createElement("img");
-    
+
     imageWind.src = "images/wind.png";
     imageHumidity.src = "images/humidity.png";
     wind.innerHTML = '';
