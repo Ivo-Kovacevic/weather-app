@@ -1,3 +1,15 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-transition-delay: 99999s;
+}
+
 html {
     margin: 0 auto;
     height: 100%;
@@ -9,7 +21,8 @@ html {
 body {
     width: 100%;
     font-family: Helvetica;
-    background-image: linear-gradient(to bottom left, #615F8E, #53568D);
+    background-image: linear-gradient(to bottom left, #84B9FC, #74B1F0);
+    /*background-image: linear-gradient(to bottom left, #615F8E, #53568D);*/
     background-size: cover;
     color: white;
     display: flex;
@@ -20,7 +33,8 @@ body {
     height: 100%;
     margin: 0 auto;
     display: grid;
-    grid-template: 20px 150px 500px / repeat(3, 300px);
+    grid-template: 20px 150px 1fr / repeat(3, 300px);
+    gap: 20px;
 }
 
 .search {
@@ -32,50 +46,107 @@ input {
     width: 100%;
     border: 0;
     padding: 5px;
-    color: rgb(200, 200, 200);
-    border-bottom: 1px solid rgb(200, 200, 200);
+    color: rgb(240, 240, 240);
+    border-bottom: 1px solid rgb(240, 240, 240);
     background-color: transparent;
 }
 
 input:focus {
     outline: none;
+    background-color: transparent;
 }
 
 ::placeholder {
-    color: rgb(200, 200, 200);
-    opacity: 1; /* Firefox */
-  }
+    color: rgb(240, 240, 240);
+}
 
 .header {
     grid-area: 2 / 1 / 3 / 4;
+    display: grid;
+    grid-template: 150px / repeat(3, 1fr);
+    gap: 20px;
+    box-sizing: content-box;
+}
+
+.data {
+    display: grid;
+    grid-template: 50% 20% 30% / repeat(2, 1fr);
+}
+
+.data > div {
+    display: flex;
+    align-items: center;
+}
+
+.temp {
+    font-size: 4em;
+}
+
+.icon {
+    justify-content: center;
+    grid-area: 1 / 2 / 3 / 3;
+}
+
+.feelsLike {
+    grid-area: 2 / 1 / 3 / 2;
+}
+
+.city-country {
+    grid-area: 1 / 2 / 2 / 4;
+}
+
+.forecast {
+    grid-area: 3 / 1 / 4 / 4;
+    display: flex;
+    gap: 10px;
+}
+
+.forecast > div {
+    flex: 1;
+}
+
+img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+h1, h2, h3 {
+    margin: 0;
 }
 
 h1 {
     font-size: 4em;
-    margin: 0;
 }
 
 h2 {
     font-size: 2em;
 }
 
+h3 {
+    text-align: center;
+}
+
 p {
     margin: 8px 0;
 }
 
+.min-max {
+    display: flex;
+    justify-content: space-around;
+}
+
 .day {
-    margin: 10px 0;
     padding: 50px;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 50px;
-    
 }
 
-i {
-    text-align: center;
-    font-size: 4em;
+.day > .wind > img {
+    max-height: 4em;
 }
 
-#tomorrow {
-    margin: 10px;
+.wind {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
