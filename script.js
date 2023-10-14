@@ -1,10 +1,10 @@
-getData("Zagreb").then(processedWeatherData => {
+/*getData("Zagreb").then(processedWeatherData => {
     console.log(processedWeatherData);
     populateHeader(processedWeatherData)
     generateDOM(processedWeatherData);
-});
+});*/
 
-const searchBar = document.getElementById("city");
+const searchBar = document.getElementById("enter");
 searchBar.addEventListener('keydown', (event) => {
     if (event.key === "Enter") {
         event.preventDefault();
@@ -13,7 +13,7 @@ searchBar.addEventListener('keydown', (event) => {
         getData(cityName).then(processedWeatherData => {
             console.log(processedWeatherData);
             generateDOM(processedWeatherData);
-            populateHeader(processedWeatherData);
+            populateStaticData(processedWeatherData);
         });
     }
 });
@@ -35,47 +35,47 @@ function processData(data) {
                                 data.current.temp_c,
                                 data.current.feelslike_c,
                                 data.current.wind_kph,
-                                data.current.humidity
+                                data.current.humidity,
+                                data.current.uv
                                 );
 
-    const forecast = [];
+    const forecastDays = [];
     data.forecast.forecastday.forEach((forecastday) => {
-        const day  = new Day(forecastday.day.condition.code,
+        const day  = new Day(forecastday.date,
+                            forecastday.day.condition.code,
                             forecastday.day.condition.text,
                             forecastday.day.mintemp_c,
                             forecastday.day.maxtemp_c,
-                            forecastday.day.maxwind_kph
+                            forecastday.day.maxwind_kph,
                             );
-        forecast.push(day);
+        forecastDays.push(day);
     });
 
     return {
         currentData: currentData,
-        forecast: forecast,
+        forecastDays: forecastDays,
     };
 }
 
 class City {
-    constructor(city, country, time, isDay, code, condition, temp, feelsLike, wind, humidity) {
-        this.location = {
-            city: city,
-            country: country,
-            time: time,
-        };
-        this.currentWeather = {
-            isDay: isDay,
-            code: code,
-            condition: condition,
-            temp: temp,
-            feelsLike: feelsLike,
-            wind: wind,
-            humidity: humidity,
-        };
+    constructor(city, country, time, isDay, code, condition, temperature, feelsLike, wind, humidity, uv) {
+        this.city = city;
+        this.country = country;
+        this.time = time;
+        this.isDay = isDay;
+        this.code = code;
+        this.condition = condition;
+        this.temperature = temperature;
+        this.feelsLike = feelsLike;
+        this.wind = wind;
+        this.humidity = humidity;
+        this.uv = uv;
     }
 }
 
 class Day {
-    constructor(code, condition, mintemp_c, maxtemp_c, maxwind_kph) {
+    constructor(date, code, condition, mintemp_c, maxtemp_c, maxwind_kph) {
+        this.date = date;
         this.code = code;
         this.condition = condition;
         this.mintemp_c = mintemp_c;
@@ -84,81 +84,66 @@ class Day {
     }
 }
 
-function populateHeader(processedWeatherData) {
+function populateStaticData(data) {
 
-    const temp = document.querySelector(".temp");
-    const feelsLike = document.querySelector(".feelsLike");
-    const image = document.querySelector(".header-image");
-    const wind = document.querySelector(".header-wind");
-    const humidity = document.querySelector(".humidity");
+    // Populate header
     const city = document.querySelector(".city");
     const country = document.querySelector(".country");
-    const imageWind = document.createElement("img");
-    const imageHumidity = document.createElement("img");
+    const time = document.querySelector(".time");
+    const temperature = document.querySelector(".temperature");
+    const feelsLike = document.querySelector(".feelsLike");
+    const image = document.getElementById("currentWeather");
 
-    imageWind.src = "images/wind.png";
-    imageHumidity.src = "images/humidity.png";
-    wind.innerHTML = '';
-    humidity.innerHTML = '';
-    wind.appendChild(imageWind);
-    wind.append(processedWeatherData.currentData.currentWeather.wind + " km/h");
-    humidity.appendChild(imageHumidity);
-    humidity.append(processedWeatherData.currentData.currentWeather.humidity + "%");
+    city.textContent = data.currentData.city;
+    country.textContent = data.currentData.country;
+    time.textContent = data.currentData.time;
+    temperature.textContent = data.currentData.temperature + "°";
+    feelsLike.textContent = "Feels like " + data.currentData.feelsLike + "°";
 
-    temp.textContent = processedWeatherData.currentData.currentWeather.temp;
-    feelsLike.textContent = "Feels like " + processedWeatherData.currentData.currentWeather.feelsLike + "°";
-    checkWeather(processedWeatherData.currentData.currentWeather, image);
 
-    city.textContent = processedWeatherData.currentData.location.city;
-    country.textContent = processedWeatherData.currentData.location.country;
+    // Populate today's conditions
+    const wind = document.querySelector(".wind");
+    const humidity = document.querySelector(".humidity");
+    const uv = document.querySelector(".uv");
+
+    wind.textContent = data.currentData.wind + " km/h";
+    humidity.textContent = data.currentData.humidity + "%";
+    uv.textContent = data.currentData.uv;
+
+
+    checkWeather(data.currentData, image);
 }
 
-function generateDOM(processedWeatherData) {
+function generateDOM(data) {
 
-    forecastSection = document.querySelector('.forecast');
-    forecastSection.innerHTML = ''
+    //generateTodayForecast(data);
+    generateWeekForecast(data);
 
-    processedWeatherData.forecast.forEach((day, index) => {
+}
 
-        const dayDiv = document.createElement("div");
-        dayDiv.classList.add("day");
+function generateWeekForecast(data) {
+
+    const section = document.querySelector(".day-forecast");
+    section.innerHTML = '';
+
+    data.forecastDays.forEach(day => {
+
+        const divDay = document.createElement("div");
+        divDay.classList.add("day");
 
         const dayName = document.createElement("h3");
-        if (index === 0) {
-            dayName.textContent = "Today";
-        } else if (index === 1) {
-            dayName.textContent = "Tomorrow";
-        } else {
-            dayName.textContent = "Day after tomorrow"
-        }
-
-        const dayImage = document.createElement("img");
-        checkWeather(day, dayImage);
-
-        const minMaxDiv = document.createElement("div");
-        minMaxDiv.classList.add("min-max");
-        const minTemp = document.createElement("h2");
-        const maxTemp = document.createElement("h2");
-        minTemp.classList.add("min-temp");
-        maxTemp.classList.add("max-temp");
-        minTemp.textContent = day.mintemp_c + '°';
-        maxTemp.textContent = day.maxtemp_c + '°';
-
-        const windDiv = document.createElement("div");
-        windDiv.classList.add("wind");
-        const windImage = document.createElement("img");
-        windImage.src = "images/wind.png";
+        const image = document.createElement("img");
+        const minMaxTemp = document.createElement("h3");
         
-        dayDiv.appendChild(dayName);
-        dayDiv.appendChild(dayImage);
-        minMaxDiv.appendChild(minTemp);
-        minMaxDiv.appendChild(maxTemp);
-        dayDiv.appendChild(minMaxDiv);
-        windDiv.appendChild(windImage);
-        windDiv.append(day.maxwind_kph + "km/h");
-        dayDiv.appendChild(windDiv);
+        dayName.textContent = day.date;
+        checkWeather(day, image);
+        minMaxTemp.textContent = day.maxtemp_c + "°/" + day.mintemp_c + "°";
 
-        forecastSection.appendChild(dayDiv);
+        divDay.appendChild(dayName);
+        divDay.appendChild(image);
+        divDay.appendChild(minMaxTemp);
+
+        section.appendChild(divDay);
     });
 }
 

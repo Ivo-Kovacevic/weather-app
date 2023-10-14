@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Carter+One&family=Ubuntu+Mono&display=swap" rel="stylesheet">
-    <!--<script src="script.js" defer></script>-->
+    <script src="script.js" defer></script>
     <script src="https://kit.fontawesome.com/1dd9609656.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -27,17 +27,17 @@
             <div class="content">
                 <div class="search">
                     <form>
-                        <input type="text" name="city" id="city" placeholder="Search city">
+                        <input type="text" name="enter" id="enter" placeholder="Search city">
                     </form>
                 </div>
-                <h2>Zagreb</h2>
-                <h3>Croatia</h3>
-                <h3>12:45:23</h3>
+                <h2 class="city">Zagreb</h2>
+                <h3 class="country">Croatia</h3>
+                <h3 class="time">12:45:23</h3>
                 <p class="temperature">31°</p>
                 <p class="feelsLike">Feels like 27°</p>
             </div>
             <div class="weather-icon">
-                <img class="bigImage" src="images/partially-cloudy.png" alt="partially-cloudy">
+                <img class="bigImage" id="currentWeather" src="images/partially-cloudy.png" alt="partially-cloudy">
             </div>
         </div>
 
@@ -95,17 +95,17 @@
             <h3>Today's conditions</h3>
 
             <div class="conditions">
-                <div class="wind">
+                <div>
                     <img src="images/wind.png">
-                    <h3>14.7 km/h</h3>
+                    <h3 class="wind">14.7 km/h</h3>
                 </div>
-                <div class="humidity">
+                <div>
                     <img src="images/humidity.png">
-                    <h3>67%</h3>
+                    <h3 class="humidity">67%</h3>
                 </div>
-                <div class="uv">
+                <div>
                     <img src="images/uv.png">
-                    <h3>HIGH</h3>
+                    <h3 class="uv">HIGH</h3>
                 </div>
             </div>
 
@@ -117,51 +117,37 @@
 
                 <div class="day">
                     <h3>Today</h3>
-                    <div class="hour-icon">
-                        <img src="images/partially-cloudy.png">
-                    </div>
+                    <img src="images/partially-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
                 <div class="day">
                     <h3>Tue</h3>
-                    <div class="hour-icon">
-                        <img src="images/partially-cloudy.png">
-                    </div>
+                    <img src="images/partially-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
                 <div class="day">
                     <h3>Wed</h3>
-                    <div class="hour-icon">
-                        <img src="images/partially-cloudy.png">
-                    </div>
+                    <img src="images/partially-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
                 <div class="day">
                     <h3>Thu</h3>
-                    <div class="hour-icon">
-                        <img src="images/partially-cloudy.png">
-                    </div>
+                    <img src="images/partially-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
                 <div class="day">
                     <h3>Fri</h3>
-                    <div class="hour-icon">
-                        <img src="images/partially-cloudy.png">
-                    </div>
+                    <img src="images/partially-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
                 <div class="day">
                     <h3>Sun</h3>
-                    <div class="hour-icon">
-                        <img src="images/partially-cloudy.png">
-                    </div>
+                    <img src="images/partially-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
                 <div class="day">
                     <h3>Sat</h3>
-                    <div class="hour-icon">
-                        <img src="images/partially-cloudy.png">
-                    </div>
+                    <img src="images/partially-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
 
