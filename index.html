@@ -3,60 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather</title>
+    <title>MyWeather</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <script src="script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Carter+One&family=Ubuntu+Mono&display=swap" rel="stylesheet">
+    <!--<script src="script.js" defer></script>-->
     <script src="https://kit.fontawesome.com/1dd9609656.js" crossorigin="anonymous"></script>
 </head>
 <body>
+
     <div class="container">
 
-        <div class="search">
-            <form>
-                <input type="text" name="city" id="city" placeholder="Search city">
-            </form>
+        <div class="header">
+            <h1>MyWeather</h1>
+            <img class="bigImage" src="images/weatherAPI.png" alt="weatherAPI">
         </div>
 
-        <div class="header">
-            <div class="data">
-                <div class="temp">25°</div>
-                <div class="icon"><img src="images/sunny.png" class="header-image"></div>
-                <div class="feelsLike">Feels like 23°</div>
-                <div class="header-wind">
-                    <img src="images/wind.png">13km/h
+        <div class="sidebar"></div>
+
+        <div class="main-display">
+            <div class="content">
+                <div class="search">
+                    <form>
+                        <input type="text" name="city" id="city" placeholder="Search city">
+                    </form>
+                </div>
+                <h2>Zagreb</h2>
+                <h3>Croatia</h3>
+                <h3>12:45:23</h3>
+                <p class="temperature">31°</p>
+                <p class="feelsLike">Feels like 27°</p>
+            </div>
+            <div class="weather-icon">
+                <img class="bigImage" src="images/partially-cloudy.png" alt="partially-cloudy">
+            </div>
+        </div>
+
+        <div class="today-forecast">
+            <h3>Today's forecast</h3>
+            <div class="hour-forecast">
+
+                <div class="hour">
+                    <h3>12:00</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°</h3>
+                </div>
+                <div class="hour">
+                    <h3>15:00</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°</h3>
+                </div>
+                <div class="hour">
+                    <h3>18:00</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°</h3>
+                </div>
+                <div class="hour">
+                    <h3>21:00</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°</h3>
+                </div>
+                <div class="hour">
+                    <h3>00:00</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°</h3>
+                </div>
+                <div class="hour">
+                    <h3>03:00</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°</h3>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="today-conditions">
+            <h3>Today's conditions</h3>
+
+            <div class="conditions">
+                <div class="wind">
+                    <img src="images/wind.png">
+                    <h3>14.7 km/h</h3>
                 </div>
                 <div class="humidity">
                     <img src="images/humidity.png">
+                    <h3>67%</h3>
+                </div>
+                <div class="uv">
+                    <img src="images/uv.png">
+                    <h3>HIGH</h3>
                 </div>
             </div>
-            <div class="city-country">
-                <h1 class="city">Zagreb</h1>
-                <h2 class="country">Croatia</h2>
+
+        </div>
+
+        <div class="week-forecast">
+            <h3>Week forecast</h3>
+            <div class="day-forecast">
+
+                <div class="day">
+                    <h3>Today</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°/21°</h3>
+                </div>
+                <div class="day">
+                    <h3>Tue</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°/21°</h3>
+                </div>
+                <div class="day">
+                    <h3>Wed</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°/21°</h3>
+                </div>
+                <div class="day">
+                    <h3>Thu</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°/21°</h3>
+                </div>
+                <div class="day">
+                    <h3>Fri</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°/21°</h3>
+                </div>
+                <div class="day">
+                    <h3>Sun</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°/21°</h3>
+                </div>
+                <div class="day">
+                    <h3>Sat</h3>
+                    <div class="hour-icon">
+                        <img src="images/partially-cloudy.png">
+                    </div>
+                    <h3>28°/21°</h3>
+                </div>
+
             </div>
         </div>
 
-        <div class="forecast">
-            <div class="day" id="today">
-                <h3>Today</h3>
-                <img src="images/partially-cloudy.png">
-                <div class="min-max">
-                    <h2 class="min-temp">17°</h2>
-                    <h2 class="max-temp">29°</h2>
-                </div>
-                <div class="wind">
-                    <img src="images/wind.png">13.5 km/h
-                </div>
-            </div>
-
-            <div class="day" id="tomorrow">
-            </div>
-
-            <div class="day" id="day-after-tomorrow">
-            </div>
-        </div>
-        
     </div>
-    <script ></script>
 </body>
 </html>
