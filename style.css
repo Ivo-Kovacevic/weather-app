@@ -112,7 +112,8 @@ body {
     align-items: center;
 }
 .day > h3 {
-    width: 60px;
+    text-align: center;
+    width: 90px;
 }
 
 h1 {

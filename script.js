@@ -1,8 +1,7 @@
-/*getData("Zagreb").then(processedWeatherData => {
-    console.log(processedWeatherData);
-    populateHeader(processedWeatherData)
+getData("Zagreb").then(processedWeatherData => {
     generateDOM(processedWeatherData);
-});*/
+    populateStaticData(processedWeatherData);
+});
 
 const searchBar = document.getElementById("enter");
 searchBar.addEventListener('keydown', (event) => {
@@ -11,7 +10,6 @@ searchBar.addEventListener('keydown', (event) => {
 
         const cityName = searchBar.value;
         getData(cityName).then(processedWeatherData => {
-            console.log(processedWeatherData);
             generateDOM(processedWeatherData);
             populateStaticData(processedWeatherData);
         });
@@ -21,39 +19,61 @@ searchBar.addEventListener('keydown', (event) => {
 async function getData(cityName) {
     const response = await fetch('https://api.weatherapi.com/v1/forecast.json?key=cd0065695f244f8783a190858232909&q=' + cityName + '&days=3', {mode: 'cors'});
     const weatherData = await response.json();
-    // console.log(weatherData);
+    //console.log(weatherData);
     return processData(weatherData);
 }
 
 function processData(data) {
-    const currentData = new City(data.location.name,
-                                data.location.country,
-                                data.location.localtime,
-                                data.current.is_day,
-                                data.current.condition.code,
-                                data.current.condition.text,
-                                data.current.temp_c,
-                                data.current.feelslike_c,
-                                data.current.wind_kph,
-                                data.current.humidity,
-                                data.current.uv
-                                );
 
+    // Current weather
+    const currentData = new City(
+        data.location.name,
+        data.location.country,
+        data.location.localtime,
+        data.current.is_day,
+        data.current.condition.code,
+        data.current.condition.text,
+        data.current.temp_c,
+        data.current.feelslike_c,
+        data.current.wind_kph,
+        data.current.humidity,
+        data.current.uv
+    );
+
+    // Today forecast
+    const currentTime = parseInt(currentData.time.split(' ')[1].split(':')[0]);
+    let forecastHours = [];
+    forecastHours = getHours(forecastHours, currentTime, data.forecast.forecastday[0]);
+    let newTime = parseInt(forecastHours[forecastHours.length - 1].time.split(' ')[1].split(':')[0]);
+    if (forecastHours.length < 6) {
+        if (newTime === 21) {
+            newTime = 0;
+        } else if (newTime === 22) {
+            newTime = 1;
+        } else {
+            newTime = 2;
+        }
+        forecastHours = getHours(forecastHours, newTime, data.forecast.forecastday[1]);
+    }
+
+    // Week forecast
     const forecastDays = [];
     data.forecast.forecastday.forEach((forecastday) => {
-        const day  = new Day(forecastday.date,
-                            forecastday.day.condition.code,
-                            forecastday.day.condition.text,
-                            forecastday.day.mintemp_c,
-                            forecastday.day.maxtemp_c,
-                            forecastday.day.maxwind_kph,
-                            );
+        const day  = new Day(
+            forecastday.date,
+            forecastday.day.condition.code,
+            forecastday.day.condition.text,
+            forecastday.day.mintemp_c,
+            forecastday.day.maxtemp_c,
+            forecastday.day.maxwind_kph,
+        );
         forecastDays.push(day);
     });
 
     return {
         currentData: currentData,
         forecastDays: forecastDays,
+        forecastHours: forecastHours,
     };
 }
 
@@ -73,6 +93,14 @@ class City {
     }
 }
 
+class Hour {
+    constructor(code, time, temp) {
+        this.code = code;
+        this.time = time;
+        this.temp = temp;
+    }
+}
+
 class Day {
     constructor(date, code, condition, mintemp_c, maxtemp_c, maxwind_kph) {
         this.date = date;
@@ -82,6 +110,25 @@ class Day {
         this.maxtemp_c = maxtemp_c;
         this.maxwind_kph = maxwind_kph;
     }
+}
+
+function getHours(forecastHours, currentTime, day) {
+
+    const hoursToIterate = day.hour.slice(currentTime);
+
+    hoursToIterate.forEach((hour, index) => {
+        if (index % 3 === 0 || index === 0) {
+            const newHour = new Hour(
+                hour.condition.code,
+                hour.time,
+                hour.temp_c
+            );
+            if (forecastHours.length < 6) {
+                forecastHours.push(newHour);
+            }
+        }
+    });
+    return forecastHours;
 }
 
 function populateStaticData(data) {
@@ -116,9 +163,37 @@ function populateStaticData(data) {
 
 function generateDOM(data) {
 
-    //generateTodayForecast(data);
+    console.log(data);
+
+    generateTodayForecast(data);
     generateWeekForecast(data);
 
+}
+
+function generateTodayForecast(data) {
+
+    const section = document.querySelector(".hour-forecast");
+    section.innerHTML = '';
+
+    data.forecastHours.forEach(hour => {
+
+        const divDay = document.createElement("div");
+        divDay.classList.add("hour");
+
+        const dayName = document.createElement("h3");
+        const image = document.createElement("img");
+        const minMaxTemp = document.createElement("h3");
+        
+        dayName.textContent = hour.time.split(' ')[1];
+        checkWeather(hour, image);
+        minMaxTemp.textContent = hour.temp;
+
+        divDay.appendChild(dayName);
+        divDay.appendChild(image);
+        divDay.appendChild(minMaxTemp);
+
+        section.appendChild(divDay);
+    });
 }
 
 function generateWeekForecast(data) {
