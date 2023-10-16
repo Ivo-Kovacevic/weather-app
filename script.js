@@ -13,13 +13,13 @@ searchBar.addEventListener('keydown', (event) => {
             generateDOM(processedWeatherData);
             populateStaticData(processedWeatherData);
         });
+        searchBar.value = '';
     }
 });
 
 async function getData(cityName) {
     const response = await fetch('https://api.weatherapi.com/v1/forecast.json?key=cd0065695f244f8783a190858232909&q=' + cityName + '&days=3', {mode: 'cors'});
     const weatherData = await response.json();
-    //console.log(weatherData);
     return processData(weatherData);
 }
 
@@ -37,7 +37,9 @@ function processData(data) {
         data.current.feelslike_c,
         data.current.wind_kph,
         data.current.humidity,
-        data.current.uv
+        data.current.uv,
+        data.forecast.forecastday[0].astro.sunrise,
+        data.forecast.forecastday[0].astro.sunset
     );
 
     // Today forecast
@@ -78,7 +80,7 @@ function processData(data) {
 }
 
 class City {
-    constructor(city, country, time, isDay, code, condition, temperature, feelsLike, wind, humidity, uv) {
+    constructor(city, country, time, isDay, code, condition, temperature, feelsLike, wind, humidity, uv, sunrise, sunset) {
         this.city = city;
         this.country = country;
         this.time = time;
@@ -90,13 +92,16 @@ class City {
         this.wind = wind;
         this.humidity = humidity;
         this.uv = uv;
+        this.sunrise = sunrise;
+        this.sunset = sunset;
     }
 }
 
 class Hour {
-    constructor(code, time, temp) {
-        this.code = code;
+    constructor(time, code, isDay, temp) {
         this.time = time;
+        this.code = code;
+        this.isDay = isDay;
         this.temp = temp;
     }
 }
@@ -119,8 +124,9 @@ function getHours(forecastHours, currentTime, day) {
     hoursToIterate.forEach((hour, index) => {
         if (index % 3 === 0 || index === 0) {
             const newHour = new Hour(
-                hour.condition.code,
                 hour.time,
+                hour.condition.code,
+                hour.is_day,
                 hour.temp_c
             );
             if (forecastHours.length < 6) {
@@ -140,12 +146,19 @@ function populateStaticData(data) {
     const temperature = document.querySelector(".temperature");
     const feelsLike = document.querySelector(".feelsLike");
     const image = document.getElementById("currentWeather");
+    const sunrise = document.querySelector(".sunrise");
+    const sunset = document.querySelector(".sunset");
 
     city.textContent = data.currentData.city;
     country.textContent = data.currentData.country;
     time.textContent = data.currentData.time;
     temperature.textContent = data.currentData.temperature + "°";
     feelsLike.textContent = "Feels like " + data.currentData.feelsLike + "°";
+
+    const date = new Date();
+
+    sunrise.textContent = data.currentData.sunrise;
+    sunset.textContent = data.currentData.sunset;
 
 
     // Populate today's conditions
@@ -158,7 +171,7 @@ function populateStaticData(data) {
     uv.textContent = data.currentData.uv;
 
 
-    checkWeather(data.currentData, image);
+    checkWeather(data.currentData, image, data.currentData.isDay);
 }
 
 function generateDOM(data) {
@@ -185,7 +198,7 @@ function generateTodayForecast(data) {
         const minMaxTemp = document.createElement("h3");
         
         dayName.textContent = hour.time.split(' ')[1];
-        checkWeather(hour, image);
+        checkWeather(hour, image, hour.isDay);
         minMaxTemp.textContent = hour.temp;
 
         divDay.appendChild(dayName);
@@ -201,16 +214,25 @@ function generateWeekForecast(data) {
     const section = document.querySelector(".day-forecast");
     section.innerHTML = '';
 
-    data.forecastDays.forEach(day => {
+    const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+    data.forecastDays.forEach((day, index) => {
 
         const divDay = document.createElement("div");
         divDay.classList.add("day");
+
+        const d = new Date(day.date);
+        let nameOfDay = d.getDay();
 
         const dayName = document.createElement("h3");
         const image = document.createElement("img");
         const minMaxTemp = document.createElement("h3");
         
-        dayName.textContent = day.date;
+        if (index === 0) {
+            dayName.textContent = "Today";
+        } else {
+            dayName.textContent = weekday[nameOfDay];
+        }
         checkWeather(day, image);
         minMaxTemp.textContent = day.maxtemp_c + "°/" + day.mintemp_c + "°";
 
@@ -222,20 +244,41 @@ function generateWeekForecast(data) {
     });
 }
 
-function checkWeather(day, image) {
+function checkWeather(day, image, dayNight) {
+
+    if (dayNight === 0) {
+        dayNight = "night";
+    } else {
+        dayNight = "day";
+    }
 
     const background = document.querySelector("body");
     
-    if (day.isDay === 0){
-        image.src = "images/night-clear.png";
-    } else if (day.code === 1000) {
-        image.src = "images/sunny.png";
-    } else if (day.code === 1003) {
-        image.src = "images/partially-cloudy.png";
-    } else if (day.code >= 1006 && day.code <= 1030) {
-        image.src = "images/cloudy.png";
-    } else if (day.code >= 1063 && day.code <= 1282) {
-        image.src = "images/rainy.png"
+    if (day.code === 1000) {
+        image.src = "images/" + dayNight + "-clear.png";
+    } else if (day.code >= 1003 && day.code <= 1009) {
+        image.src = "images/" + dayNight + "-cloudy.png";
+    } else if (day.code === 1030 || day.code === 1135 || day.code === 1147) {
+        image.src = "images/" + dayNight + "-mist.png";
+    } else if (day.code === 1063 
+            || day.code === 1072 
+            || (day.code >= 1150 && day.code <= 1183)
+            || day.code === 1198
+            || day.code === 1240) {
+        image.src = "images/" + dayNight + "-light-rain.png";
+    } else if ((day.code >= 1186 && day.code <= 1195)
+            || day.code === 1201
+            || day.code === 1207
+            || (day.code >= 1243 && day.code <= 1246)) {
+        image.src = "images/" + dayNight + "-rain.png";
+    } else if (day.code >= 1066 && day.code <= 1069
+            || day.code >= 1114 && day.code <= 1117
+            || day.code >= 1204 && day.code <= 1237
+            || day.code >= 1249 && day.code <= 1264) {
+        image.src = "images/" + dayNight + "-snow.png"
+    } else if (day.code >= 1273 && day.code <= 1282
+            || day.code === 1087) {
+        image.src = "images/" + dayNight + "-storm.png"
     }
 
     if (day.isDay === 0 || day.code >= 1006 && day.code <= 1282) {

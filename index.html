@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Carter+One&family=Ubuntu+Mono&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Carter+One&family=Ubuntu+Mono&display=swap" rel="stylesheet">
     <script src="script.js" defer></script>
     <script src="https://kit.fontawesome.com/1dd9609656.js" crossorigin="anonymous"></script>
 </head>
@@ -18,10 +18,19 @@
 
         <div class="header">
             <h1>MyWeather</h1>
-            <img class="bigImage" src="images/weatherAPI.png" alt="weatherAPI">
+            <img class="bigImage" id="weatherapi" src="images/weatherAPI.png" alt="weatherAPI">
         </div>
 
-        <div class="sidebar"></div>
+        <div class="sidebar">
+            <div>
+                <img src="images/sunrise.png">
+                <h3 class="sunrise">06:00</h3>
+            </div>
+            <div>
+                <img src="images/sunset.png">
+                <h3 class="sunset">06:00</h3>
+            </div>
+        </div>
 
         <div class="main-display">
             <div class="content">
@@ -37,7 +46,7 @@
                 <p class="feelsLike">Feels like 27°</p>
             </div>
             <div class="weather-icon">
-                <img class="bigImage" id="currentWeather" src="images/partially-cloudy.png" alt="partially-cloudy">
+                <img class="bigImage" id="currentWeather" src="images/day-cloudy.png" alt="day-cloudy">
             </div>
         </div>
 
@@ -47,32 +56,32 @@
 
                 <div class="hour">
                     <h3>12:00</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°</h3>
                 </div>
                 <div class="hour">
                     <h3>15:00</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°</h3>
                 </div>
                 <div class="hour">
                     <h3>18:00</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°</h3>
                 </div>
                 <div class="hour">
                     <h3>21:00</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°</h3>
                 </div>
                 <div class="hour">
                     <h3>00:00</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°</h3>
                 </div>
                 <div class="hour">
                     <h3>03:00</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°</h3>
                 </div>
 
@@ -105,38 +114,41 @@
 
                 <div class="day">
                     <h3>Today</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
                 <div class="day">
                     <h3>Tue</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
                 <div class="day">
                     <h3>Wed</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
                 <div class="day">
                     <h3>Thu</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
                 <div class="day">
                     <h3>Fri</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
                 <div class="day">
                     <h3>Sun</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°/21°</h3>
                 </div>
                 <div class="day">
                     <h3>Sat</h3>
-                    <img src="images/partially-cloudy.png">
+                    <img src="images/day-cloudy.png">
                     <h3>28°/21°</h3>
+                </div>
+                <div class="day">
+                    <h3><img src="images/error.png">Something is wrong</h3>
                 </div>
 
             </div>
